@@ -4,25 +4,53 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react"
 
+const badgeStyles = {
+  SALE: "bg-red-500 text-white",
+  NEW: "bg-green-500 text-white",
+  BEST: "bg-blue-500 text-white",
+  HOT: "bg-pink-500 text-white",
+  POPULAR: "bg-purple-500 text-white",
+};
 
 export default function ProductCard({ product }) {
   return (
-    <Card className="group overflow-hidden border hover:shadow-md transition">
+    <Card className="group overflow-hidden border hover:shadow-md transition z-0">
 
       {/* IMAGE */}
       <div className="relative bg-gray-100">
-        <img
-          src={`https://picsum.photos/${product.img}`}
-          alt={product.name}
-          className="w-full h-64 object-cover group-hover:scale-105 transition duration-300"
+        <img src={`https://picsum.photos/${product.img}`} alt={product.name}
+          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
 
         {/* BADGE */}
         {product.badge && (
-          <Badge className="absolute top-3 left-3 bg-orange-500 hover:bg-orange-500">
-            {product.badge}
-          </Badge>
+          <div className="absolute top-3 left-0">
+            <span
+              className={`
+        relative text-white text-xs font-semibold px-3 py-1 pl-4
+        ${badgeStyles[product.badge] || "bg-gray-500"}
+      `}
+            >
+              {product.badge}
+
+              {/* triangle gauche */}
+              <span
+                className={`
+          absolute left-0 top-0 w-0 h-0
+          border-t-[12px] border-b-[12px] border-l-[12px]
+          border-t-transparent border-b-transparent
+          ${product.badge === "SALE" ? "border-l-orange-700" :
+                    product.badge === "NEW" ? "border-l-blue-700" :
+                      product.badge === "BEST" ? "border-l-green-700" :
+                        product.badge === "HOT" ? "border-l-red-700" :
+                          "border-l-purple-700"}
+        `}
+              />
+            </span>
+          </div>
         )}
+
+
       </div>
 
       {/* CONTENT */}
@@ -41,8 +69,8 @@ export default function ProductCard({ product }) {
               key={star}
               size={16}
               className={`${star <= (product.rating || 4)
-                  ? "fill-yellow-400 text-yellow-400"
-                  : "text-gray-300"
+                ? "fill-yellow-400 text-yellow-400"
+                : "text-gray-300"
                 }`}
             />
           ))}
